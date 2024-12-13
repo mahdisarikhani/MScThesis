@@ -1,0 +1,238 @@
+\RequirePackage{appendix}
+\RequirePackage[bibstyle=apa,citestyle=numeric-comp,sorting=none]{biblatex}
+\RequirePackage{caption}
+\RequirePackage{contour}
+\RequirePackage{enumitem}
+\RequirePackage{fancyhdr}
+\RequirePackage{geometry}
+\RequirePackage{graphicx}
+\RequirePackage[hidelinks]{hyperref}
+\RequirePackage[onehalfspacing]{setspace}
+\RequirePackage[absolute]{textpos}
+\RequirePackage{titlesec}
+\RequirePackage{tocloft}
+\RequirePackage{xepersian}
+\RequirePackage[bottom,flushmargin,hang,perpage]{footmisc}
+
+\SepMark{-}
+\urlstyle{same}
+\definecolor{BlueGray}{RGB}{31,73,125}
+
+\AtBeginDocument{
+    \renewcommand{\bibname}{منابع}
+    \renewcommand{\listfigurename}{فهرست شکل‌ها}
+    \renewcommand{\listtablename}{فهرست جدول‌ها}
+}
+
+\renewcommand{\cleardoublepage}{\clearpage}
+
+%% تنظیم فاصله ی حاشیه صفحات
+\geometry{paperheight=235mm,paperwidth=165mm,margin=20mm,right=25mm,marginparsep=0pt,headsep=5pt,asymmetric,includefoot}
+
+%% تنضیمات مربوط به فونت
+\settextfont[Scale=1]{B Nazanin}
+\setlatintextfont[Scale=0.83]{Times New Roman}
+\DeclareMathSizes{12}{10}{7}{6}
+\DeclareMathSizes{10.95}{9.125}{6.4}{5.4}
+\DeclareMathSizes{10}{8.33}{5.8}{5}
+\setlength{\footnotesep}{0pt}
+
+%% تنظیم پاراگراف بندی ها
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+%% صفحه خالی
+\newcommand{\blankpage}{
+    \clearpage
+    \shipout\null
+    \thispagestyle{empty}
+    \clearpage
+}
+
+%% صفحه بسم الله
+\newcommand{\bismillah}{
+    \clearpage
+    \thispagestyle{empty}
+    \vspace*{\fill}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{assets/bismillah}
+    \end{center}
+    \vspace*{\fill}
+}
+
+%% سایز عنوان فهرست ها
+\renewcommand{\cfttoctitlefont}{\hfil\bfseries}
+\renewcommand{\cftaftertoctitle}{\vspace{\baselineskip}}
+\setlength{\cftaftertoctitleskip}{0pt}
+\setlength{\cftbeforetoctitleskip}{-1.55em}
+\addtocontents{toc}{\textbf{عنوان}\hfill\textbf{صفحه}\par}
+
+\renewcommand{\cftlottitlefont}{\hfil\bfseries}
+\renewcommand{\cftafterlottitle}{\vspace{\baselineskip}}
+\setlength{\cftafterlottitleskip}{0pt}
+\setlength{\cftbeforelottitleskip}{-1.55em}
+\addtocontents{lot}{\textbf{عنوان}\hfill\textbf{صفحه}\vspace{0.5\baselineskip}\par}
+
+\renewcommand{\cftloftitlefont}{\hfil\bfseries}
+\renewcommand{\cftafterloftitle}{\vspace{\baselineskip}}
+\setlength{\cftafterloftitleskip}{0pt}
+\setlength{\cftbeforeloftitleskip}{-1.55em}
+\addtocontents{lof}{\textbf{عنوان}\hfill\textbf{صفحه}\vspace{0.5\baselineskip}\par}
+
+%% دستورات اضافه کردن کلمه فصل به ابتدای شماره فصل در فهرست
+\let\original@chapter\@chapter
+\def\@chapter[#1]#2{
+    \if@mainmatter
+        \refstepcounter{chapter}
+        \addcontentsline{toc}{chapter}{\chaptername~\tartibi{chapter}:~#1}
+    \else
+        \addcontentsline{toc}{chapter}{#1}
+    \fi
+    \chaptermark{#1}
+    \if@twocolumn
+        \@topnewpage[\@makechapterhead{#2}]
+    \else
+        \@makechapterhead{#2}
+        \@afterheading
+    \fi
+}
+
+%% استفاده از خط فاصله به جای نقطه در شماره گذاری سکشن ها
+\renewcommand{\cftsecaftersnum}{\@SepMark}
+\renewcommand{\cftsubsecaftersnum}{\@SepMark}
+\renewcommand{\cftsubsubsecaftersnum}{\@SepMark}
+\renewcommand{\cftfigaftersnum}{\@SepMark}
+\renewcommand{\cfttabaftersnum}{\@SepMark}
+
+%% افزودن کلمه شکل به اول موارد موجود در لیست تصاویر و جداول
+\renewcommand{\@tocrmarg}{1.55em}
+
+\renewcommand{\cfttabpresnum}{\tablename~}
+\setlength{\cfttabindent}{0pt}
+\addtolength{\cfttabnumwidth}{2.2em}
+
+\renewcommand{\cftfigpresnum}{\figurename~}
+\setlength{\cftfigindent}{0pt}
+\addtolength{\cftfignumwidth}{2em}
+
+%% نمایش خط فاصله در کپشن ها و لیست ها
+\setlist{left=0pt,nosep}
+\DeclareCaptionLabelSeparator{dash}{\@SepMark~}
+\captionsetup{font=footnotesize,labelsep=dash}
+
+%% تنظیمات نقطه چین
+\renewcommand{\dotfill}{\leavevmode\cleaders\hbox to 2pt{\hss.\hss}\hfill\kern0pt}
+\renewcommand{\cftdotsep}{\cftdot}
+\renewcommand{\cftchapdotsep}{\cftdot}
+
+%% وسط چین شماره گذاری فصل و نحوه نمایش آن
+\titleformat{\chapter}[display]{\fontsize{16pt}{19pt}\selectfont\bfseries\centering}{\chaptername~\tartibi{chapter}}{24pt}{\thispagestyle{empty}}
+\titlespacing*{\chapter}{0pt}{90pt}{2\baselineskip}
+
+%% تنظیم فونت سکشن ها
+\titleformat{\section}{\normalsize\bfseries}{\thesection\@SepMark~}{0pt}{}
+\titlespacing*{\section}{0pt}{\baselineskip}{0pt}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection\@SepMark~}{0pt}{}
+\titlespacing*{\subsection}{0pt}{\baselineskip}{0pt}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection\@SepMark~}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{\baselineskip}{0pt}
+
+%% تنظیمات هدر و فوتر
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\fancyhead[R]{\textbf{\PersianTitle}}
+\setlength{\headheight}{15pt}
+\addtolength{\topmargin}{-1pt}
+\renewcommand{\chaptermark}[1]{\markboth{\chaptername~\tartibi{chapter}:~#1}{}}
+
+%% تنظیمات پیوست
+\renewcommand{\appendixtocname}{پیوست‌ها}
+\newcommand{\app}[1]{\clearpage\protect\section[\hspace{1.5em}#1]{#1}}
+\AtBeginEnvironment{appendices}{\renewcommand{\thesection}{پیوست~\arabic{section}}}
+
+%% تنظیمات منابع
+\addbibresource{references.bib}
+\DeclareFieldFormat{labelnumberwidth}{\mkbibbrackets{#1}}
+\defbibenvironment{bibliography}{%
+    \list{%
+        \printtext[labelnumberwidth]{%
+            \printfield{labelprefix}%
+            \printfield{labelnumber}%
+        }
+    }
+    {%
+        \setlength{\labelwidth}{\labelnumberwidth}%
+        \setlength{\leftmargin}{\labelwidth}%
+        \setlength{\labelsep}{\biblabelsep}%
+        \addtolength{\leftmargin}{\labelsep}%
+        \setlength{\itemsep}{\bibitemsep}%
+        \setlength{\parsep}{\bibparsep}%
+    }
+    \renewcommand*{\makelabel}[1]{\hss##1}
+}{\endlist}{\item}
+\defbibheading{bibliography}[\bibname]{
+    \begin{persian}
+        \section*{#1}
+        \vspace{\baselineskip}
+    \end{persian}
+    \addcontentsline{toc}{chapter}{#1}
+    \markboth{#1}{#1}
+}
+
+%% تنظیم فاصله معادلات ریاضی
+\AtBeginDocument{
+    \setlength{\abovedisplayskip}{5pt}
+    \setlength{\belowdisplayskip}{5pt}
+    \setlength{\abovedisplayshortskip}{5pt}
+    \setlength{\belowdisplayshortskip}{5pt}
+}
+
+%% نشان دادن تصاویر در بالای صفحه خالی
+\raggedbottom
+
+%% کامندهای مربوط به اطلاعات پایان نامه
+\newcommand{\Name}[2]{\newcommand{\PersianName}{#1}\newcommand{\LatinName}{#2}}
+\newcommand{\StudentNumber}[1]{\newcommand{\PersianStudentNumber}{#1}\newcommand{\LatinStudentNumber}{#1}}
+
+\newcommand{\University}[2]{\newcommand{\PersianUniversity}{#1}\newcommand{\LatinUniversity}{#2}}
+\newcommand{\School}[2]{\newcommand{\PersianSchool}{#1}\newcommand{\LatinSchool}{#2}}
+\newcommand{\Department}[2]{\newcommand{\PersianDepartment}{#1}\newcommand{\LatinDepartment}{#2}}
+\newcommand{\Field}[2]{\newcommand{\PersianField}{#1}\newcommand{\LatinField}{#2}}
+\newcommand{\Degree}[3]{\newcommand{\PersianDegree}{#1}\newcommand{\LatinDegree}{#2}\newcommand{\LatinDegreeAbbr}{#3}}
+
+\newcommand{\ThesisTitle}[2]{\newcommand{\PersianTitle}{#1}\newcommand{\LatinTitle}{#2}}
+\newcommand{\ThesisDate}[2]{\newcommand{\PersianDate}{#1}\newcommand{\LatinDate}{#2}}
+\newcommand{\ThesisGrade}[2]{\newcommand{\PersianGrade}{#1}\newcommand{\LatinGrade}{#2}}
+\newcommand{\ThesisType}[2]{\newcommand{\PersianType}{#1}\newcommand{\LatinType}{#2}}
+\newcommand{\DefenseDate}[2]{\newcommand{\PersianDefenseDate}{#1}\newcommand{\LatinDefenseDate}{#2}}
+
+\newcommand{\Supervisor}[3]{\newcommand{\PersianSupervisor}{#1}\newcommand{\LatinSupervisor}{#2}\newcommand{\LatinSupervisorAbbr}{#3}}
+\newcommand{\SupervisorTitle}[2]{\newcommand{\PersianSupervisorTitle}{#1}\newcommand{\LatinSupervisorTitle}{#2}}
+\newcommand{\SupervisorDepartment}[2]{\newcommand{\PersianSupervisorDepartment}{#1}\newcommand{\LatinSupervisorDepartment}{#2}}
+
+\newcommand{\SupervisorB}[3]{\newcommand{\PersianSupervisorB}{#1}\newcommand{\LatinSupervisorB}{#2}\newcommand{\LatinSupervisorAbbrB}{#3}}
+\newcommand{\SupervisorTitleB}[2]{\newcommand{\PersianSupervisorTitleB}{#1}\newcommand{\LatinSupervisorTitleB}{#2}}
+\newcommand{\SupervisorDepartmentB}[2]{\newcommand{\PersianSupervisorDepartmentB}{#1}\newcommand{\LatinSupervisorDepartmentB}{#2}}
+
+\newcommand{\Advisor}[2]{\newcommand{\PersianAdvisor}{#1}\newcommand{\LatinAdvisor}{#2}}
+\newcommand{\AdvisorTitle}[2]{\newcommand{\PersianAdvisorTitle}{#1}\newcommand{\LatinAdvisorTitle}{#2}}
+\newcommand{\AdvisorDepartment}[2]{\newcommand{\PersianAdvisorDepartment}{#1}\newcommand{\LatinAdvisorDepartment}{#2}}
+
+\newcommand{\Referee}[2]{\newcommand{\PersianReferee}{#1}\newcommand{\LatinReferee}{#2}}
+\newcommand{\RefereeTitle}[2]{\newcommand{\PersianRefereeTitle}{#1}\newcommand{\LatinRefereeTitle}{#2}}
+\newcommand{\RefereeDepartment}[2]{\newcommand{\PersianRefereeDepartment}{#1}\newcommand{\LatinRefereeDepartment}{#2}}
+
+
+\RequirePackage[version=4]{mhchem}
+\let\originalce\ce
+\renewcommand{\ce}[1]{\lr{\originalce{#1}}}
+
+\let\originaltext\text
+\renewcommand{\text}[1]{\originaltext{\lr{#1}}}
+
+\let\originalleft\left
+\let\originalright\right
+\renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
+\renewcommand{\right}{\aftergroup\egroup\originalright}
+
+\renewcommand{\textendash}{-}

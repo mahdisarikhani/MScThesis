@@ -1,0 +1,407 @@
+\thispagestyle{empty}
+\addappheadtotoc
+\centerline{\textbf{\appendixtocname}}
+
+\begin{appendices}
+    \app{انتشار باور} \label{app:belief_propagation}
+    در یک سیستم آماری، تعداد حالت‌هایی که انرژی معینی دارند با
+    \( \mathcal{N}(E) \)
+    نشان داده می‌شود و آنتروپی
+    \( S(E) \)
+    را بر اساس آن به صورت زیر تعریف می‌شود:
+    \begin{equation} \label{eq:number_density}
+        \mathcal{N} (E) = e^{N S(E)}
+    \end{equation}
+    که در آن
+    \( E \)
+    چگالی انرژی و
+    \( S \)
+    چگالی آنتروپی است.
+    اگر
+    \( \Phi(\beta) \)
+    را به عنوان چگالی آنتروپی آزاد در نظر بگیریم، می‌توان تابع پارش سیستم را به صورت زیر بازنویسی کرد:
+    \begin{equation} \label{eq:partition_function}
+        e^{N \Phi(\beta)} = Z = \sum_{\{ s_{i} \}_{i=1}^{N}} e^{-\beta E} = \sum_{E} \sum_{\text{\lr{All states with energy}} E} e^{-N \beta E} = \int dE \, e^{N (S(E) - \beta E)}
+    \end{equation}
+    در اینجا، جمع روی همه حالت‌ها به جمع روی حالت‌های با انرژی
+    \( E \)
+    و جمع روی تمام مقادیر مخلتف انرژی تجزیه شده است.
+    همچنین، با استفاده از
+    \autoref{eq:number_density}
+    جمع روی تمام حالت‌ها با انرژی
+    \( E \)
+    را با تعداد این حالت‌ها جایگزین کرده و سپس جمع روی مقادیر گسسته
+    \( E \)
+    را به انتگرال تبدیل کرده‌ایم.
+
+    با توجه به
+    \autoref{eq:partition_function}
+    و در نظر گرفتن حد
+    \( N \to \infty \)
+    و استفاده از روش نقطه زینی، روابط زیر به دست می‌آیند:
+    \begin{equation}
+        \left. \frac{\partial S(E)}{\partial E} \right|_{E = E^{*}} = \beta, \qquad \Phi(\beta) = S(E^{*}) - \beta E^{*}
+    \end{equation}
+    در دمای
+    \( \beta \)
+    از یک حالت تصادفی
+    نمونه‌برداری شود، انرژی آن در
+    \( E^{*} = \langle E \rangle \)
+    متمرکز است.
+    این به این معنی است که توزیع بولتزمن انتخاب مناسبی برای احتمال رخداد یک حالت انرژی معین است، زیرا:
+    \begin{equation}
+        \frac{d \Phi(\beta)}{d \beta} = - \langle E \rangle
+    \end{equation}
+
+    اگر بتوان چگالی آنتروپی آزاد
+    \( \Phi \)
+    را به عنوان تابعی از
+    \( \beta \)
+    محاسبه کرد، می‌توان با محاسبه‌ی مشتق‌های آن، میانگین انرژی و تعداد حالت‌ها با یک انرژی معین
+    \( S(E) \)
+    را به دست آورد.
+    این محاسبات معمولاً پیچیده و به لحاظ محاسباتی دشوار است.
+    بنابراین، برای به دست آوردن نتایج تقریبی و در برخی موارد دقیق، می‌توان از الگوریتم انتشار باور و آنتروپی آزاد بته استفاده کرد.
+
+    حال تابع توزیع احتمال زیر را در نظر بگیرید:
+    \begin{equation} \label{eq:probability_distribution}
+        P \left( \{ s_{i} \}_{i=1}^{N} \right) = \frac{1}{Z} \prod_{i=1}^{N} g_{i}(s_{i}) \prod_{a=1}^{M} f_{a}(\{ s_{i} \}_{i \in \partial a})
+    \end{equation}
+    این تابع توزیع بیان می‌کند که احتمال رخداد حالت
+    \( \{ s_{i} \}_{i=1}^{N} \)
+    متناسب با احتمال رخداد هر حالت
+    \( g_{i}(s_{i}) \)
+    و قیدهای
+    \( f_{a}(\{ s_{i} \}_{i \in \partial a}) \)
+    است که نشان دهنده‌ی برهمکنش‌های سیستم است.
+    در اینجا، تعداد متغیرها
+    \( N \)
+    است و مجموعه‌ای از
+    \( M \)
+    قید در سیستم وجود دارد.
+
+    همان‌طور که می‌دانیم، کمیت‌های مورد علاقه را می‌توان از ثابت بهنجارش
+    \autoref{eq:probability_distribution}
+    یا همان تابع پارش استخراج کرد:
+    \begin{equation}
+        Z = \sum_{\{ s_{i} \}_{i=1}^{N}} \prod_{i}^{N} g_{i}(s_{i}) \prod_{a=1}^{M} f_{a}(\{ s_{i} \}_{i \in \partial a})
+    \end{equation}
+
+    حال می‌خواهیم مقدار تابع پارش را برای سیستم محاسبه کنیم.
+    برای محاسبه برای این کار، ابتدا دو احتمال زیر را تعریف می‌کنیم:
+    \begin{align}
+        \chi_{s_{j}}^{j \to a} & = \frac{1}{Z^{j \to a}} g_j(s_j) \prod_{b \in \partial j \backslash a} \psi_{s_{j}}^{b \to j}                                                                                               \\
+        \psi_{s_{i}}^{a \to i} & = \frac{1}{Z^{a \to i}} \sum_{\{ s_{j} \}_{j \in \partial a \backslash i}} f_{a} \left( \{ s_{j} \}_{j \in \partial a} \right) \prod_{j \in \partial a \backslash i} \chi_{s_{j}}^{j \to a}
+    \end{align}
+    که در اینجا،
+    \( \chi_{s_{j}}^{j \to a} \)
+    احتمال این است که متغیر
+    \( j \)
+    مقدار
+    \( s_{j} \)
+    را بگیرد، در حالی که تمام برهمکنش‌های سیستم با متغیر
+    \( j \)
+    در نظر گرفته شده‌اند و تنها برهمکنش
+    \( a \)
+    و تمام متغیرهایی که به برهمکنش
+    \( a \)
+    متصل هستند (به جز
+    \( j \))
+    از سیستم حذف شده‌اند.
+    این احتمال را می‌توان به شکل پیامی از متغیر
+    \( j \)
+    به برهمکنش
+    \( a \)
+    تعبیر کرد.
+    همچنین،
+    \( \psi_{s_{i}}^{a \to i} \)
+    احتمال این است که متغیر
+    \( i \)
+    مقدار
+    \( s_{i} \)
+    را بگیرد، در صورتی که تمام برهمکنش های متصل به متغیر
+    \( i \)
+    به جز برهمکنش
+    \( a \)
+    حذف شده باشند.
+    این احتمال را می‌توان به شکل پیامی از برهمکنش
+    \( a \)
+    به متغیر
+    \( i \)
+    تعبیر کرد.
+
+    ثابت‌های بهنجارش
+    \( Z^{j \to a} \) و \( Z^{a \to i} \)
+    که در معادله‌های بالا ظاهر شدند، به صورت زیر نوشته می‌شوند:
+    \begin{align}
+        Z^{j \to a} & = \sum_{s_i} g_j(s_j) \prod_{b \in \partial j \backslash a} \psi_{s_{j}}^{b \to j} \\
+        \begin{split}
+            Z^{a \to i} & = \sum_{s_{i}} \sum_{\{ s_{j} \}_{j \in \partial a \backslash i}} f_{a} \left( \{ s_{j} \}_{j \in \partial a} \right) \prod_{j \in \partial a \backslash i} \chi_{s_{j}}^{j \to a} \\
+                        & = \sum_{\{ s_{j} \}_{j \in \partial a}} f_{a} \left( \{ s_{j} \}_{j \in \partial a} \right) \prod_{j \in \partial a \backslash i} \chi_{s_{j}}^{j \to a}
+        \end{split}
+    \end{align}
+
+    این معادله‌ها که معادله‌هایی خودسازگار هستند، به عنوان معادله‌های انتشار باور شناخته می‌شوند.
+
+    جواب معادله‌های انتشار باور، مجموعه‌ای از احتمال‌های حاشیه‌ای
+    \( \chi^{i \to j} \)
+    را فراهم می‌کند که می‌توان از آن‌ها برای محاسبه آنتروپی آزاد بته
+    \( \Phi \)
+    استفاده کرد.
+    این احتمال‌های حاشیه‌ای تخمین‌هایی از احتمال‌های حاشیه‌ای واقعی متغیرها هستند و همچنین آنتروپی آزاد بته تخمینی برای آنتروپی آزاد واقعی است.
+
+    بنابراین، با یافتن جواب معادله‌های انتشار باور، می‌توان آنتروپی آزاد و میانگین انرژی را به صورت تقریبی محاسبه کرد.
+    با داشتن آنتروپی آزاد
+    \( \Phi \)
+    و میانگین انرژی
+    \( E^{*} \)
+    می‌توان آنتروپی
+    \( S(E) \)
+    را به راحتی محاسبه کرد:
+    \[ S(E^{*}) = \Phi(\beta) + \beta E^{*} \]
+
+    به طور خاص، مقدار آنتروپی آزاد
+    \( N \Phi = \ln Z \)
+    و توزیع احتمال‌های حاشیه‌ای برای هر متغیر، کمیت‌های مورد علاقه در هر سیستم هستند:
+    \[ \mu_{i}(s_{i}) = \sum_{\{ s_{j} \}_{j=1}^{N}, j \ne i} P \left( \{ s_{j} \}_{j=1}^{N} \right) \]
+
+    معادله‌های انتشار باور که پیش‌تر معرفی شدند، در قالب اصلی خود برای محاسبه‌ی تابع پارش سیستم مناسب نیستد، زیرا این معادله‌ها به انتخاب ریشه‌ی درخت شبکه‌ی برهمکنش‌ها وابسته‌اند.
+    بنابراین، برای محاسبه تابع پارش، به معادله‌ای نیاز داریم که هم شامل پیام‌های
+    \( \chi \) و \( \psi \)
+    باشد و هم به گونه‌ای مستقل از انتخاب ریشه‌ی شبکه‌ی برهمکنش تعریف شده باشد.
+    به همین منظور، معادله‌های زیر معرفی شده‌اند:
+    \begin{align}
+        \label{eq:z_variable}
+        Z^{i}  & = \sum_{r} g_{i}(s_{i}) \prod_{a \in \partial i} \psi_{r}^{a \to i}                                                           \\
+        Z^{a}  & = \sum_{\{ s_{i} \}_{i \in \partial a}} f_{a}(\{ s_{i} \}_{i \in \partial a}) \prod_{i \in \partial a} \chi_{s_{i}}^{i \to a} \\
+        Z^{ia} & = \sum_{r} \chi_{r}^{i \to a} \psi_{r}^{a \to i}
+    \end{align}
+
+    تابع پارش را می‌توان با استفاده از این معادله‌ها به شکل زیر بیان کرد:
+    \begin{equation}
+        Z = \frac{\prod_{i=1}^{N} Z^{i} \prod_{a=1}^{M} Z^{a}}{\prod_{(ia) \in E} Z^{ia}}
+    \end{equation}
+
+    تفسیر این معادله‌ها به شرح زیر است:
+    \begin{itemize}[label=-]
+        \item \( Z^{i} \)
+              نشان دهنده‌ی تغییر در تابع پارش
+              \( Z \)
+              هنگام اضافه شدن متغیر
+              \( i \)
+              به سیستم است.
+        \item \( Z^{a} \)
+              بیانگر تغییر در تابع پارش
+              \( Z \)
+              است وقتی برهمکنش
+              \( a \)
+              به سیستم اضافه شود.
+        \item \( Z^{ia} \)
+              نشان دهنده‌ی تغییر در تابع پارش
+              \( Z \)
+              است وقتی متغیر
+              \( i \)
+              و برهمکنش
+              \( a \)
+              به هم متصل می‌شوند.
+    \end{itemize}
+
+    بنابراین، تابع پارش را می‌توان به صورت زیر توصیف کرد.
+    ابتدا، همه‌ی مشارکت‌های متغیرها و برهمکنش‌ها در تابع پارش در نظر گرفته می‌شوند.
+    با اضافه کردن هر متغیر یا برهمکنش جدید، تمامی اتصال‌های مرتبط به آن نیز لحاظ می‌شوند،
+    به همین دلیل، هر اتصال میان متغیرها و برهمکنش‌ها دقیقاً دو بار شمارش می‌شود.
+    در نتیجه، برای تصحیح این شمارش مضاعف، باید سهم اتصال‌ها را به اندازه‌ی یک بار از کل تابع پارش کم کنیم.
+
+    برای محاسبه‌ی احتمال‌های حاشیه‌ای
+    \( \mu_{i}(s_{i}) \)
+    از معادله‌ی زیر استفاده می‌شود:
+    \begin{equation}
+        \mu_{i}(s_{i}) = \frac{1}{Z^{i}} g_{i}(s_{i}) \prod_{a \in \partial i} \psi_{s_{i}}^{a \to i}
+    \end{equation}
+    که در آن ثابت بهنجارش
+    \( Z^{i} \)
+    توسط
+    \autoref{eq:z_variable}
+    تعریف شده است.
+    همان طور که مشاهده می‌کنید،
+    هر احتمال حاشیه‌ای
+    \( \mu_{i}(s_{i}) \)
+    یک تابع ساده از پیام‌های دریافتی
+    \( \psi_{s_{i}}^{a \to i} \)
+    از تمام برهمکنش‌های
+    \( a \)
+    متصل به متغیر
+    \( i \)
+    است.
+
+    در سیستم‌هایی که برهمکنش‌ها دوتایی هستند، معادله‌های انتشار باور را می‌توان به شکل ساده‌تری نوشت.
+    برای دو متغیر همسایه
+    \( i \) و \( j \)،
+    تابع پارش جزئی
+    \( Z_{i \to j}(s_i) \)
+    را در نظر بگیرید.
+    این عبارت نشان دهنده‌ی تابع پارش متغیر
+    \( i \)
+    است با فرض این که مقدار
+    \( s_{i} \)
+    را دارد و اتصال آن با متغیر
+    \( j \)
+    نیز نادیده گرفته شده است.
+    به همین ترتیب،
+    \( Z_{i}(s_{i}) \)
+    تابع پارش جزئی متغیر
+    \( i \)
+    است وقتی مقدار
+    \( s_{i} \)
+    را دارد.
+    بنابراین، معادله‌های انتشار باور را می‌توان به شکل زیر نوشت:
+    \begin{align}
+        \label{eq:partial_partition_function_constraint}
+        Z_{i \to j}(s_{i}) & = \psi_{i}(s_{i}) \prod_{k \in \partial i \backslash j} \left( \sum_{s_{k}} Z_{k \to i}(s_{k}) \psi_{ik}(s_{i},s_{k}) \right) \\
+        \label{eq:partial_partition_function_variable}
+        Z_{i}(s_{i})       & = \psi_{i}(s_{i}) \prod_{j \in \partial i} \left( \sum_{s_{j}} Z_{j \to i}(s_{j}) \psi_{ij}(s_{i},s_{j}) \right)
+    \end{align}
+
+    کار با تابع پارش در بسیاری از موارد می‌تواند دشوار و حتی گاهی غیرممکن باشد.
+    بنابراین، می‌توان با بهنجار کردن معادله‌های
+    \ref{eq:partial_partition_function_constraint} و \ref{eq:partial_partition_function_variable}،
+    آن‌ها را به شکل احتمال بازنویسی کرد:
+    \begin{align}
+        \label{eq:marginal_constraint}
+        \eta_{i \to j}(s_{i}) & = \frac{Z_{i \to j}(s_{j})}{\sum_{s'_{i}} Z_{i \to j}(s'_{j})} \\
+        \label{eq:marginal_variable}
+        \eta_{i}(s_{i})       & = \frac{Z_{i}(s_{i})}{\sum_{s'_{i}} Z_{i}(s'_{i})}
+    \end{align}
+    که در اینجا،
+    \( \eta_{i \to j}(s_{i}) \)
+    توزیع احتمال حاشیه‌ای متغیر
+    \( s_{i} \)
+    است هنگامی که برهمکنش
+    \( (ij) \)
+    حذف شده است و
+    \( \eta_{i}(s_{i}) \)
+    توزیع احتمال حاشیه‌ای متغیر
+    \( s_{i} \)
+    است هنگامی که همه‌ی برهمکنش‌ها در نظر گرفته شده‌اند.
+
+    با استفاده از معادله‌های
+    \ref{eq:partial_partition_function_constraint} و \ref{eq:partial_partition_function_variable}
+    می‌توان معادله‌های
+    \ref{eq:marginal_constraint} و \ref{eq:marginal_variable}
+    به شکل زیر بازنویسی کرد:
+    \begin{align}
+        \label{eq:probability_constraint}
+        \eta_{i \to j}(s_{i}) & = \frac{\psi_{i}(s_{i})}{z_{i \to j}} \prod_{k \in \partial i \backslash j} \left( \sum_{s_{k}} \eta_{k \to i} (s_k) \psi_{ik}(s_{i},s_{k}) \right) \\
+        \label{eq:probability_variable}
+        \eta_{i}(s_{i})       & = \frac{\psi_{i}(s_{i})}{z_{i}} \prod_{j \in \partial i} \left( \sum_{s_{j}} \eta_{j \to i} (s_{j}) \psi_{ij}(s_{i},s_{j}) \right)
+    \end{align}
+    که در اینجا
+    \( z_{i \to j} \) و \( z_{i} \)
+    ثابت‌های بهنجارش هستند که به شکل زیر تعریف می‌شوند:
+    \begin{align}
+        \label{eq:normalization_constraint}
+        z_{i \to j} & = \sum_{s_{i}} \psi_{i}(s_{i}) \prod_{k \in \partial i \backslash j} \left( \sum_{s_{k}} \eta_{k \to i}(s_{k}) \psi_{ik}(s_{i},s_{k}) \right) \\
+        \label{eq:normalization_variable}
+        z_{i}       & = \sum_{s_{i}} \psi_{i}(s_{i}) \prod_{j \in \partial i} \left( \sum_{s_{j}} \eta_{j \to i}(s_{j}) \psi_{ij}(s_{i},s_{j}) \right)
+    \end{align}
+
+    معادله‌های
+    \ref{eq:probability_constraint} و \ref{eq:probability_variable}
+    به همراه معادله‌های بهنجارش
+    \ref{eq:normalization_constraint} و \ref{eq:normalization_variable}
+    معادله‌های انتشار باور را تشکیل می‌دهند.
+    به احتمال حاشیه‌ای
+    \( \eta_{i \to j}(s_{i}) \)،
+    احتمال حفره نیز گفته می‌شود زیرا با حذف یک متغیر از شبکه برهمکنش‌ها به دست آمده است.
+
+    برای محاسبه‌ی تابع پارش، ابتدا کمیتی به صورت زیر برای هر برهمکنش
+    \( (ij) \)
+    تعریف می‌شود:
+    \begin{equation} \label{eq:z_constraint}
+        z_{ij} = \sum_{s_{i},s_{j}} \eta_{j \to i}(s_{j}) \eta_{i \to j}(s_{i}) \psi_{ij}(s_{i}, s_{j}) = \frac{z_{j}}{z_{j \to i}} = \frac{z_{i}}{z_{i \to j}}
+    \end{equation}
+    سپس، با استفاده از معادله‌های
+    \ref{eq:normalization_variable}، \ref{eq:marginal_constraint} و \ref{eq:partial_partition_function_variable}،
+    تابع پارش جزئی متغیر
+    \( i \)
+    را می‌توان به شکل زیر نوشت:
+    \begin{equation}
+        \begin{split}
+            z_{i} & = \sum_{s_{i}} \psi_{i}(s_{i}) \prod_{j \in \partial i} \left( \sum_{s_{j}} \eta_{j \to i} (s_{j}) \psi_{ij}(s_{i},s_{j}) \right)                                       \\
+                  & = \sum_{s_{i}} \psi_{i}(s_{i}) \prod_{j \in \partial i} \left( \sum_{s_{j}} \frac{Z_{j \to i}(s_{j})}{\sum_{s'_{j}} Z_{j \to i}(s'_{j})} \psi_{ij}(s_{i},s_{j}) \right) \\
+                  & = \frac{\sum_{s_{i}} Z_{i}(s_{i})}{\prod_{j \in \partial i } \sum_{s_{j}} Z_{j \to i}(s_{j})}
+        \end{split}
+    \end{equation}
+
+    به طور مشابه می‌توان نوشت:
+    \begin{equation}
+        z_{j \to i} = \frac{\sum_{s_{j}} Z_{j \to i}(s_{j})}{\prod_{k \in \partial j \backslash i} \sum_{s_{k}} Z_{k \to j}(s_{k})}
+    \end{equation}
+
+    برای همه‌ی حالت‌های
+    \( s_{i} \)،
+    می‌توان تابع پارش کل را با استفاده از رابطه زیر به دست آورد:
+    \[ Z = \sum_{s_i} Z_i(s_i) \]
+
+    بنابراین، می‌توان از یک متغیر دلخواه
+    \( i \)
+    شروع کرده و رابطه زیر را برای تابع پارش نوشت:
+    \[ Z = \sum_{s_{i}} Z_{i}(s_{i}) = z_{i} \prod_{j \in \partial i} \left( \sum_{s_{j}} Z_{j \to i}(s_{j}) \right) = z_i \prod_{j \in \partial i} \left( z_{j \to i} \prod_{k \in \partial j \backslash i} \sum_{s_{k}} Z_{k \to j}(s_{k}) \right) \]
+
+    با استفاده از
+    \autoref{eq:z_constraint}
+    می‌توان تمام احتمال‌های حاشیه‌ای
+    \( z_{j \to i} \)
+    را که در معادله بالا ظاهر شده‌اند با احتمال‌های حاشیه‌ای متغیرها و برهمکنش‌ها جایگزین کرد.
+    به این ترتیب، به رابطه زیر خواهیم رسید:
+    \[ Z = z_{i} \prod_{j \in \partial i} \left( z_{j \to i} \prod_{k \in \partial j \backslash i} z_{k \to j} \cdots \right) = z_{i} \prod_{j \in \partial i} \left( \frac{z_{j}}{z_{ij}} \prod_{k \in \partial j \backslash i} \frac{z_{k}}{z_{jk}} \cdots \right) = \frac{\prod_{i} z_{i}}{\prod_{(ij)} z_{ij}} \]
+    این شکل از تابع پارش، محاسبه‌ی آنتروپی آزاد را به گونه‌ای ممکن می‌سازد که بتوان مستقیماً از پیام‌های حفره برای انجام این محاسبه استفاده کرد.
+    به این آنتروپی آزاد، آنتروپی آزاد بته گفته می‌شود و به صورت زیر محاسبه می‌شود:
+    \begin{equation}
+        N \Phi = \ln Z = \sum_{i} f_{i} - \sum_{(ij)} f_{ij}
+    \end{equation}
+    که در اینجا
+    \( f_{i} = \ln z_{i} \) و \( f_{ij} = \ln z_{ij} \)
+    هستند.
+    \( f_{i} \)
+    از بهنجار کردن توزیع احتمال حاشیه‌ای متغیر
+    \( i \)
+    به دست آمده است و تغییر در تابع پارش را هنگام افزودن متغیر
+    \( i \)
+    و برهمکنش‌های مرتبط با آن به سیستم نشان می‌دهد.
+    همچنین،
+    \( f_{ij} \)
+    تغییر در تابع پارش را هنگام افزودن برهمکنش
+    \( (ij) \)
+    به سیستم نشان می‌دهد.
+    این معادله، تفسیری ساده از آنتروپی آزاد بته ارائه می‌دهد.
+    آنتروپی آزاد کل سیستم برابر است با مجموع آنتروپی آزاد
+    \( f_{i} \)
+    برای همه‌ی متغیر‌ها و برهمکنش‌های آن‌ها، اما از آنجا که هر برهمکنش در این مجموع دو بار شمارش شده است، برای تصحیح این شمارش اضافه،
+    \( f_{ij} \)
+    را از مجموع کم می‌کنیم.
+
+    \app{گزیده‌ای از تابع‌های استفاده شده در شبیه‌سازی‌ها}
+    تمام شبیه‌سازی‌های این پژوهش با استفاده از زبان برنامه نویسی راست\LTRfootnote{Rust programming language} انجام شده است.
+    تمامی کدهای نوشته شده در
+    \cite{sarikhani2024}
+    ارائه شده‌اند.
+    در این پیوست تنها برخی از تابع‌های مهم آورده شده است.
+
+    \vspace{\baselineskip}
+    تابع‌های الگوریتم انتشار باور و دینامیک جمعیت برای محاسبه تعداد جواب‌های دینامیکی
+    \begin{latin}
+        \inputminted[firstline=155,lastline=178]{rust}{../codes/bpmc/src/bin/bp.rs}
+        \inputminted[firstline=206,lastline=262]{rust}{../codes/bpmc/src/bin/bp.rs}
+        \inputminted[firstline=264,lastline=275]{rust}{../codes/bpmc/src/bin/bp.rs}
+        \inputminted[firstline=277,lastline=298]{rust}{../codes/bpmc/src/bin/bp.rs}
+    \end{latin}
+
+    \clearpage
+
+    تابع‌های الگوریتم مونته‌کارلو برای تصحیح خطا در پارامترها
+    \begin{latin}
+        \inputminted[firstline=57,lastline=83]{rust}{../codes/bpmc/src/bin/mc.rs}
+        \inputminted[firstline=85,lastline=104]{rust}{../codes/bpmc/src/bin/mc.rs}
+    \end{latin}
+\end{appendices}

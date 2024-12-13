@@ -1,0 +1,97 @@
+\documentclass[12pt]{book}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\algsetup{linenosize=\normalsize,linenodelimiter=-}
+\AtBeginEnvironment{algorithmic}{\setstretch{1.25}}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bbm}
+\usepackage{framed}
+\usepackage[european]{circuitikz}
+
+\usepackage{minted}
+\setminted{breaklines,fontsize=\scriptsize,linenos,xleftmargin=2em}
+
+\usepackage{shirazu}
+
+\Name{مهدی ساریخانی}{Mahdi Sarikhani}
+\StudentNumber{۱۲۳۴۵۶۷۸}
+\University{دانشگاه شیراز}{Shiraz University}
+\School{دانشکده علوم}{School of Science}
+\Department{بخش فیزیک}{Department of Physics}
+\Field{فیزیک - فیزیک آماری و سامانه‌های پیچیده}{Physics - Statistical Physics and Complex Systems}
+\Degree{کارشناسی ارشد}{Master of Science}{M.Sc.}
+
+\ThesisTitle{تشخیص و تصحیح دینامیکی خطاها در یک مدل نورونی}{Dynamical Inference and Correction of Errors in a Neural Model}
+\ThesisType{پایان‌نامه}{Thesis}
+\ThesisDate{شهریور ۱۴۰۳}{September 2024}
+\ThesisGrade{عالی}{Excellent}
+\DefenseDate{۱۴۰۳/۰۶/۲۰}{10/09/2024}
+
+\Supervisor{دکتر ابوالفضل رمضان‌پور}{Abolfazl Ramezanpour}{A. Ramezanpour}
+\SupervisorTitle{استادیار}{Assistant Prof.}
+\SupervisorDepartment{فیزیک}{Physics}
+
+\SupervisorB{دکتر افشین منتخب}{Afshin Montakhab}{A. Montakhab}
+\SupervisorTitleB{استاد}{Prof.}
+\SupervisorDepartmentB{فیزیک}{Physics}
+
+\Advisor{دکتر محسن قاسمی‌نژادحقیقی}{M. Ghasemi Nezhadhaghighi}
+\AdvisorTitle{استادیار}{Assistant Prof.}
+\AdvisorDepartment{فیزیک}{Physics}
+
+\Referee{دکتر سعید دعوت‌الحق}{S. Davatolhagh}
+\RefereeTitle{استاد}{Prof.}
+\RefereeDepartment{فیزیک}{Physics}
+
+\begin{document}
+
+\pagestyle{empty}
+\include{frontmatter/cover}
+\include{frontmatter/titlepage}
+\blankpage
+\bismillah
+\include{frontmatter/authenticity}
+\include{frontmatter/referees}
+\include{frontmatter/dedication}
+\include{frontmatter/acknowledgements}
+
+\pagenumbering{alph}
+\setcounter{page}{8}
+\pagestyle{plain}
+
+\include{frontmatter/abstract}
+\tableofcontents
+\clearpage
+\listoffigures
+\clearpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\pagestyle{fancy}
+
+\include{chapters/chapter1}
+\include{chapters/chapter2}
+\include{chapters/chapter3}
+\include{chapters/chapter4}
+
+\pagestyle{plain}
+
+\begin{latin}
+    \singlespacing
+    \printbibliography
+\end{latin}
+\include{chapters/appendix}
+
+\newgeometry{margin=20mm,left=25mm,asymmetric}
+\pagestyle{empty}
+
+\include{backmatter/abstract}
+\include{backmatter/referees}
+\blankpage
+\include{backmatter/titlepage}
+\include{backmatter/cover}
+
+\end{document}
